@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タイピングゲームを作る</title>
+    <style>
+    html {
+        touch-action: manipulation;
+    }
+    html, body, div, span, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    abbr, address, cite, code,
+    del, dfn, em, img, ins, kbd, q, samp,
+    small, strong, sub, sup, var,
+    b, i,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, figcaption, figure,
+    footer, header, hgroup, menu, nav, section, summary,
+    time, mark, audio, video {
+        margin:0;
+        padding:0;
+        border:0;
+        outline:0;
+        font-size:100%;
+        vertical-align:baseline;
+        background:transparent;
+    }
+    body {
+        line-height:1;
+    }
+    article,aside,details,figcaption,figure,
+    footer,header,hgroup,menu,nav,section {
+        display:block;
+    }
+    ul {
+        list-style:none;
+    }
+    blockquote, q {
+        quotes:none;
+    }
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content:'';
+        content:none;
+    }
+    a {
+        margin:0;
+        padding:0;
+        font-size:100%;
+        vertical-align:baseline;
+        background:transparent;
+    }
+    /* change colors to suit your needs */
+    ins {
+        background-color:#ff9;
+        color:#000;
+        text-decoration:none;
+    }
+    /* change colors to suit your needs */
+    mark {
+        background-color:#ff9;
+        color:#000;
+        font-style:italic;
+        font-weight:bold;
+    }
+    del {
+        text-decoration: line-through;
+    }
+    abbr[title], dfn[title] {
+        border-bottom:1px dotted;
+        cursor:help;
+    }
+    table {
+        border-collapse:collapse;
+        border-spacing:0;
+    }
+    /* change border color to suit your needs */
+    hr {
+        display:block;
+        height:1px;
+        border:0;  
+        border-top:1px solid #cccccc;
+        margin:1em 0;
+        padding:0;
+    }
+    input, select {
+        vertical-align:middle;
+    }
+    /* Reset CSS ここまで */
+
+    body {
+        font-family: "Hiragino Sans", "Hiragino  Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
+    }
+    .text-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .text-container label {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .question {
+        display: flex;
+        font-size: 4vw;
+        font-weight: bold;
+        letter-spacing: 0.25em;
+        text-align: center;
+    }
+    .marker {
+        background: #91dbf1;
+    }
+    .text {
+        width: 100%;
+        border: none;
+        margin-top: 2rem;
+        font-size: 2vw;
+        letter-spacing: 0.1em;
+        text-align: center;
+    }
+    .text:focus, .text:focus-visible {
+        border: none;
+        outline: none;
+    }
+    .message {
+        display: block;
+        margin-top: 2rem;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    .button {
+        margin-top: 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+    .hidden { 
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <div class="text-container">
+       <div class="question">
+       <span id="entered" class="marker"></span>
+       <span id="remained"></span>
+       </div>
+    <input type="text" class="text" id="inputText">
+    </div>
+    <div id="message" class="text-container hidden">
+        <div class="message">
+            ゲームクリア<br>
+            <button id="replay" class="button">もう一度プレイする</button>
+        </div>
+
+    </div>
+    </body>
+    <script>
+        'use strict';
+
+        //問題文の追加
+        const questions = [
+            'javascript',
+        ];
+
+        const entered=document.getElementById('entered');
+        const remained=document.getElementById('remained');
+        const inputText=document.getElementById('inputText');
+        const game=document.getElementById('game');
+        const message=document.getElementById('message');
+        const replayBtn=document.getElementById('replayBtn');
+
+        let remainedTextWords = remained.textContent.split(''); //　問題文を1文字ずつにわけている
+        console.log(remainedTextWords);
+        
+        let enteredTextWords = [];
+        let currentKey;
+        let currentText;
+        
+        //  新しい問題文をセットする関数
+        const setQuestion =() =>{
+            // 配列「questions」からランダムで問題文を一つ選ぶ
+            currentKey = Math.floor(Math.random() * questions.length);
+            currentText = questions[ currentKey ];
+
+            // 1度選ばれた問題は配列から削除
+            questions.splice(currentKey, 1); // <== 配列の名前.splice(削除したい要素の位置(〇番目),　この位置から何個の要素を削除するか);
+            console.log(questions);
+
+            // 現在の問題文をリセットして、新しい問題文を表示させる
+            // 画面に新しい問題文をセット
+            entered.textContent = '';
+            remained.textContent = currentText;
+
+            // これまで入力されたフォームの値をリセット
+            inputText.value = '';
+
+            //　入力済みの文字、未入力の文字を配列の中身をリセット
+            enteredTextWords = [];
+            remainedTextWords = currentText.split('');
+
+        };
+        setQuestion(); //　ここで最初の問題文をセットしている
+
+        document.addEventListener('input', (e)=>{ // 1文字目が合っていたら正解表示するもの
+            if(remainedTextWords[0] == e.data){
+                console.log("正解");
+
+                // 入力済みの文字の配列の最後に1文字追加
+                enteredTextWords.push(remainedTextWords[0]);
+                // 未入力文字の配列の先頭から①文字削除
+                remainedTextWords.shift();
+
+                // あらかじめ入力済みの文字と未入力の文字を①文字ずつ格納しておく配列を用意する
+                // 正しく入力てきた文字は未入力の文字の配列から削除して、入力済みの文字の配列に追加する。
+                entered.textContent = enteredTextWords.join('');
+                remained.textContent = remainedTextWords.join('');
+                
+                // すべての文字が正しく入力されたら新しい問題文をセット
+                if(remainedTextWords.length <= 0){
+                    console.log('すべて入力済み');
+                    if(questions.length <= 0){
+                        game.classList.add('hidden'); //ゲーム画面を非表示
+                        message.classList.remove('hidden'); // 終了メッセージを表示
+                    }else{
+                    setQuestion(); //　新しい問題文
+                    }
+                }
+            }else{
+                console.log("不正解");
+            }
+        });
+
+        //　もう1度プレイするボタン
+        replayBtn.addEventListener('click', ()=> {
+            window.location.reload(); //ページの再読み込み
+        }
+    )
+    </script>
+</body>
+</html>
