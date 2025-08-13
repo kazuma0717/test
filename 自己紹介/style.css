@@ -1,0 +1,140 @@
+/* 全体のスタイル */
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    line-height: 1.8;
+    color: #333;
+    background-color: #f9f9f9;
+    margin: 0;
+}
+
+/* ヘッダー */
+header {
+    background-color: #3498db; /* メインカラー */
+    color: #ffffff;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+header p {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* メインコンテンツ */
+main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+section {
+    background-color: #ffffff;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #3498db;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+}
+
+.h2-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.5rem;
+}
+
+
+/* 自己紹介セクション */
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* 画像を丸くする */
+    object-fit: cover; /* 画像の比率を保つ */
+}
+
+/* スキルセクション */
+.skills-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.skills-list li {
+    background-color: #eaf5fc;
+    color: #3498db;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* 経歴セクション */
+.timeline {
+    border-left: 3px solid #3498db;
+    padding-left: 1.5rem;
+}
+.timeline dt {
+    font-weight: bold;
+    color: #3498db;
+}
+.timeline dd {
+    margin-left: 0;
+    margin-bottom: 1rem;
+}
+
+/* フッター */
+footer {
+    text-align: center;
+    padding: 2rem 0;
+    background-color: #333;
+    color: #ffffff;
+}
+.social-links a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    font-weight: bold;
+}
+.social-links a:hover {
+    text-decoration: underline;
+}
+.copyright {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-top: 1rem;
+}
+
+/* スマートフォン向けの調整 */
+@media (max-width: 600px) {
+    .profile-container {
+        flex-direction: column; /* 縦並びにする */
+        text-align: center;
+    }
+    header h1 {
+        font-size: 2rem;
+    }
+    h2 {
+        font-size: 1.5rem;
+    }
+}
